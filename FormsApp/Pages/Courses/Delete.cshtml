@@ -1,0 +1,96 @@
+﻿@page
+@model FormsApp.Pages.Courses.DeleteModel
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h2>Delete</h2>
+
+<p class="text-danger">@Model.ErrorMessage</p>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Course</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Course.Title)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Course.Title)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Course.Stage)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Course.Stage)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Course.MaxStudents)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Course.MaxStudents)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Course.Trainer)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Course.Trainer)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Course.DatesAndPlaces)
+        </dt>
+        <dd>
+            <table class="table">
+                <tr>
+                    <th>Date</th>
+                    <th>Place</th>
+                </tr>
+                @foreach (var item in Model.Course.DatesAndPlaces)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Date)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Place)
+                        </td>
+                    </tr>
+                }
+            </table>
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Course.StudentCourses)
+        </dt>
+        <dd>
+            <table class="table">
+                <tr>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Email</th>
+                </tr>
+                @foreach (var item in Model.Course.StudentCourses)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Student.FirstMidName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Student.LastName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Student.Email)
+                        </td>
+                    </tr>
+                }
+            </table>
+        </dd>
+    </dl>
+
+    <form method="post">
+        <input type="hidden" asp-for="Course.CourseId" />
+        <input type="submit" value="Delete" class="btn btn-default" /> |
+        <a asp-page="./Index">Back to List</a>
+    </form>
+</div>
