@@ -27,6 +27,12 @@
             @Html.DisplayFor(model => model.Course.Stage)
         </dd>
         <dt>
+            CurrentStudents
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Course.StudentCourses.Count)
+        </dd>
+        <dt>
             @Html.DisplayNameFor(model => model.Course.MaxStudents)
         </dt>
         <dd>
@@ -66,8 +72,8 @@
         <dd>
             <table class="table">
                 <tr>
-                    <th>First Name</th>
-                    <th>Last Name</th>
+                    <th>First LastName</th>
+                    <th>Last LastName</th>
                     <th>Email</th>
                 </tr>
                 @foreach (var item in Model.Course.StudentCourses)

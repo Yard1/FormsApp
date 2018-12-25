@@ -1,0 +1,118 @@
+﻿@page
+@using FormsApp.Pages.Students
+@model FormsApp.Pages.Students.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<form asp-page="./Index"
+      method="get"
+      asp-route-sortOrder="@Model.CurrentSort"
+      asp-route-entriesPerPage="@Model.EntriesPerPage">
+    <input type="hidden" name="sortOrder" value="@Model.CurrentSort" />
+    <input type="hidden" name="entriesPerPage" value="@Model.EntriesPerPage"/>
+    <div class="form-actions no-color">
+        <p>
+            Find by:
+            <select name="searchType" class="form-control" asp-items="@(new SelectList(Enum.GetValues(typeof(IndexModel.SearchType)), Model.CurrentSearchType))"></select>
+            <input type="text" name="searchString" value="@Model.CurrentFilter"/>
+            <input type="submit" value="Search" class="btn btn-default"/> |
+            <a asp-page="./Index" asp-route-searchType="@Model.CurrentSearchType" asp-route-entriesPerPage="@Model.EntriesPerPage">Back to full List</a>
+        </p>
+    </div>
+</form>
+<table class="table">
+    <thead>
+    <tr>
+        <th>
+            <a asp-page="./Index" asp-route-sortOrder="@Model.NameSort">
+                @Html.DisplayNameFor(model => model.Student[0].LastName)
+            </a>
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Student[0].FirstMidName)
+        </th>
+        <th>
+            <a asp-page="./Index" asp-route-sortOrder="@Model.EmailSort">
+                @Html.DisplayNameFor(model => model.Student[0].Email)
+            </a>
+        </th>
+        <th>
+            <a asp-page="./Index" asp-route-sortOrder="@Model.FacultySort">
+                @Html.DisplayNameFor(model => model.Student[0].Faculty)
+            </a>
+        </th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model.Student)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.LastName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FirstMidName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Faculty)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.StudentId">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.StudentId">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.StudentId">Delete</a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
+
+@{
+    var prevDisabled = !Model.Student.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.Student.HasNextPage ? "disabled" : "";
+}
+
+<a asp-page="./Index"
+   asp-route-sortOrder="@Model.CurrentSort"
+   asp-route-pageIndex="@(Model.Student.PageIndex - 1)"
+   asp-route-currentFilter="@Model.CurrentFilter"
+   asp-route-searchType="@Model.CurrentSearchType"
+   asp-route-entriesPerPage="@Model.EntriesPerPage"
+   class="btn btn-default @prevDisabled">
+    Previous
+</a>
+<a asp-page="./Index"
+   asp-route-sortOrder="@Model.CurrentSort"
+   asp-route-pageIndex="@(Model.Student.PageIndex + 1)"
+   asp-route-currentFilter="@Model.CurrentFilter"
+   asp-route-searchType="@Model.CurrentSearchType"
+   asp-route-entriesPerPage="@Model.EntriesPerPage"
+   class="btn btn-default @nextDisabled">
+    Next
+</a>
+<form asp-page="./Index"
+      method="get"
+      asp-route-sortOrder="@Model.CurrentSort"
+      asp-route-searchType="@Model.CurrentSearchType"
+      asp-route-currentFilter="@Model.CurrentFilter">
+    <input type="hidden" name="sortOrder" value="@Model.CurrentSort" />
+    <input type="hidden" name="searchType" value="@Model.CurrentSearchType"/>
+    <input type="hidden" name="currentFilter" value="@Model.CurrentFilter"/>
+    <div class="form-actions no-color">
+        <p>
+            Entries per page:
+            <input type="text" name="entriesPerPage" value="@Model.DefaultEntriesPerPage"/>
+            <input type="submit" value="Change" class="btn btn-default"/>
+        </p>
+    </div>
+</form>

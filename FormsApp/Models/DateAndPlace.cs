@@ -13,4 +13,10 @@ namespace FormsApp.Models
         public DateTime Date { get; set; }
         public string Place { get; set; }
     }
+
+    public class DateAndPlaceVM
+    {
+        public DateTime Date { get; set; }
+        public string Place { get; set; }
+    }
 }

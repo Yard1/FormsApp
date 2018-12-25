@@ -44,6 +44,11 @@ namespace FormsApp
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
+            services.AddMvc().AddRazorPagesOptions(options =>
+            {
+                options.Conventions.AuthorizeFolder("/Management");
+            });
+
             services.AddDbContext<FormsAppContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("FormsAppContext")));
         }

@@ -24,6 +24,12 @@
             @Html.DisplayFor(model => model.Course.Stage)
         </dd>
         <dt>
+            CurrentStudents
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Course.StudentCourses.Count)
+        </dd>
+        <dt>
             @Html.DisplayNameFor(model => model.Course.MaxStudents)
         </dt>
         <dd>
@@ -63,8 +69,8 @@
         <dd>
             <table class="table">
                 <tr>
-                    <th>First Name</th>
-                    <th>Last Name</th>
+                    <th>First LastName</th>
+                    <th>Last LastName</th>
                     <th>Email</th>
                 </tr>
                 @foreach (var item in Model.Course.StudentCourses)
@@ -87,5 +93,6 @@
 </div>
 <div>
     <a asp-page="./Edit" asp-route-id="@Model.Course.CourseId">Edit</a> |
+    <a asp-page="./Delete" asp-route-id="@Model.Course.CourseId">Delete</a> |
     <a asp-page="./Index">Back to List</a>
 </div>

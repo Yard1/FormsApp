@@ -7,9 +7,8 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using FormsApp.Models;
-using Microsoft.Extensions.Logging;
 
-namespace FormsApp.Pages.Courses
+namespace FormsApp.Pages.Students
 {
     public class EditModel : PageModel
     {
@@ -21,7 +20,7 @@ namespace FormsApp.Pages.Courses
         }
 
         [BindProperty]
-        public Course Course { get; set; }
+        public Student Student { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -30,9 +29,9 @@ namespace FormsApp.Pages.Courses
                 return NotFound();
             }
 
-            Course = await _context.Course.FindAsync(id);
+            Student = await _context.Student.FindAsync(id);
 
-            if (Course == null)
+            if (Student == null)
             {
                 return NotFound();
             }
@@ -46,15 +45,15 @@ namespace FormsApp.Pages.Courses
                 return Page();
             }
 
-            _context.Attach(Course).State = EntityState.Modified;
+            _context.Attach(Student).State = EntityState.Modified;
 
             try
             {
                 await _context.SaveChangesAsync();
             }
-            catch (DbUpdateConcurrencyException ex)
+            catch (DbUpdateConcurrencyException)
             {
-                if (!CourseExists(Course.CourseId))
+                if (!StudentExists(Student.StudentId))
                 {
                     return NotFound();
                 }
@@ -67,9 +66,9 @@ namespace FormsApp.Pages.Courses
             return RedirectToPage("./Index");
         }
 
-        private bool CourseExists(int id)
+        private bool StudentExists(int id)
         {
-            return _context.Course.Any(e => e.CourseId == id);
+            return _context.Student.Any(e => e.StudentId == id);
         }
     }
 }
