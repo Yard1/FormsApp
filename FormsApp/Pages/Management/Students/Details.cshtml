@@ -35,6 +35,32 @@
         <dd>
             @Html.DisplayFor(model => model.Student.Faculty)
         </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Student.StudentCourses)
+        </dt>
+        <dd>
+            <table class="table">
+                <tr>
+                    <th>Title</th>
+                    <th>Stage</th>
+                    <th> </th>
+                </tr>
+                @foreach (var item in Model.Student.StudentCourses)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Course.Title)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Course.Stage)
+                        </td>
+                        <td>
+                            <a asp-page="../Courses/Details" asp-route-id="@item.CourseId">Go to</a>
+                        </td>
+                    </tr>
+                }
+            </table>
+        </dd>
     </dl>
 </div>
 <div>

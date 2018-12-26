@@ -43,5 +43,7 @@ namespace FormsApp.Models
         public string Email { get; set; }
 
         public Faculty Faculty { get; set; }
+
+        public string SearchValue { get; set; }
     }
 }

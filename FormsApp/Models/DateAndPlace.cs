@@ -16,6 +16,8 @@ namespace FormsApp.Models
 
     public class DateAndPlaceVM
     {
+        public int DateAndPlaceId { get; set; }
+        public int CourseId { get; set; }
         public DateTime Date { get; set; }
         public string Place { get; set; }
     }

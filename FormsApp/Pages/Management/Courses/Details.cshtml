@@ -1,4 +1,6 @@
 ﻿@page
+@using FormsApp.Models
+@using FormsApp.Pages.Courses
 @model FormsApp.Pages.Courses.DetailsModel
 
 @{
@@ -69,23 +71,27 @@
         <dd>
             <table class="table">
                 <tr>
-                    <th>First LastName</th>
-                    <th>Last LastName</th>
+                    <th>LastName</th>
+                    <th>FirstName</th>
                     <th>Email</th>
+                    <th> </th>
                 </tr>
                 @foreach (var item in Model.Course.StudentCourses)
                 {
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Student.FirstMidName)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Student.LastName)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Student.Email)
-                        </td>
-                    </tr>
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Student.LastName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Student.FirstMidName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Student.Email)
+                    </td>
+                    <td>
+                        <a asp-page="../Students/Details" asp-route-id="@item.StudentId">Go to</a>
+                    </td>
+                </tr>
                 }
             </table>
         </dd>
@@ -95,4 +101,5 @@
     <a asp-page="./Edit" asp-route-id="@Model.Course.CourseId">Edit</a> |
     <a asp-page="./Delete" asp-route-id="@Model.Course.CourseId">Delete</a> |
     <a asp-page="./Index">Back to List</a>
+    <form method="post"><button type="submit" class="btn btn-default" asp-page-handler="DownloadFile" asp-route-id="@Model.Course.CourseId">Download Students .CSV</button></form>
 </div>

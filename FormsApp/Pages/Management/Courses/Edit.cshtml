@@ -14,8 +14,9 @@
 <h4>Course</h4>
 <hr />
 <div class="row">
-    <div class="col-md-4">
+    <div>
         <partial name="_CourseMainEdit" model="Model.CourseVM" />
+        <br/>
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="CourseVM.CourseId" />
@@ -24,7 +25,6 @@
             <input type="hidden" asp-for="CourseVM.Stage" />
             <input type="hidden" asp-for="CourseVM.MaxStudents" />
             <input type="hidden" asp-for="CourseVM.Trainer" />
-            <input type="hidden" name="formAction" value="1" />
             <div class="form-group">
                 <dt>
                     @Html.DisplayNameFor(model => model.DatesAndPlaceVms)
@@ -34,39 +34,127 @@
                         <tr>
                             <th>Date</th>
                             <th>Place</th>
+                            <th> </th>
                         </tr>
-                        @foreach (var item in Model.DatesAndPlaceVms)
+                        @for (var i = 0; i < Model.DatesAndPlaceVms.Count; i++)
                         {
-                            <tr>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Date)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Place)
-                                </td>
-                            </tr>
+                            var item = Model.DatesAndPlaceVms[i];
+                            if (Model.DateAndPlaceVM != null && Model.DateAndPlaceVM.DateAndPlaceId == item.DateAndPlaceId)
+                            {
+                                <tr>
+                                    <td>
+                                        <input asp-for="DateAndPlaceVM.Date" class="form-control" />
+                                        <span asp-validation-for="DateAndPlaceVM.Date" class="text-danger"></span>
+                                    </td>
+                                    <td>
+                                        <input asp-for="DateAndPlaceVM.Place" class="form-control" />
+                                        <span asp-validation-for="DateAndPlaceVM.Place" class="text-danger"></span>
+                                    </td>
+                                    <td>
+                                        <input type="submit" value="Save" asp-page-handler="editdap" asp-route-editId="@Model.DateAndPlaceVM.DateAndPlaceId" class="btn btn-default" />
+                                        <input type="submit" value="Delete" asp-page-handler="deletedap" asp-route-deleteId="@Model.DateAndPlaceVM.DateAndPlaceId" class="btn btn-default" />
+                                    </td>
+                                </tr>
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Date)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Place)
+                                    </td>
+                                    <td>
+                                        @if (Model.DateAndPlaceVM == null)
+                                        {
+                                            <input type="submit" value="Edit" asp-page-handler="editstartdap" asp-route-editId="@item.DateAndPlaceId" class="btn btn-default" />
+                                            <input type="submit" value="Delete" asp-page-handler="deletedap" asp-route-deleteId="@item.DateAndPlaceId" class="btn btn-default" />
+                                        }
+                                        else
+                                        {
+                                            <input type="submit" value="Edit" disabled class="btn btn-default" />
+                                            <input type="submit" value="Delete" disabled class="btn btn-default" />
+                                        }
+                                    </td>
+                                </tr>
+                            }
                         }
-                        <tr>
-                            <td>
-                                <input asp-for="DateAndPlaceVM.Date" class="form-control" />
-                                <span asp-validation-for="DateAndPlaceVM.Date" class="text-danger"></span>
-                            </td>
-                            <td>
-                                <input asp-for="DateAndPlaceVM.Place" class="form-control" />
-                                <span asp-validation-for="DateAndPlaceVM.Place" class="text-danger"></span>
-                            </td>
-                        </tr>
                     </table>
                 </dd>
             </div>
             <div class="form-group">
-                <input type="submit" value="Add" class="btn btn-default" />
+                <input type="submit" value="Add" asp-page-handler="add" class="btn btn-default" />
+            </div>
+        </form>
+        <br/>
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="CourseVM.CourseId" />
+            <input type="hidden" asp-for="CourseVM.CurrentStudents" />
+            <input type="hidden" asp-for="CourseVM.Title" />
+            <input type="hidden" asp-for="CourseVM.Stage" />
+            <input type="hidden" asp-for="CourseVM.MaxStudents" />
+            <input type="hidden" asp-for="CourseVM.Trainer" />
+            <div class="form-group">
+                <dt>
+                    @Html.DisplayNameFor(model => model.StudentVms)
+                </dt>
+                <dd>
+                    <table class="table">
+                        <tr>
+                            <th>LastName</th>
+                            <th>FirstMidName</th>
+                            <th>Email</th>
+                            <th>Faculty</th>
+                            <th> </th>
+                        </tr>
+                        @for (var i = 0; i < Model.StudentVms.Count; i++)
+                        {
+                            var item = Model.StudentVms[i];
+                            if (item == null)
+                            {
+                                continue;
+                            }
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.LastName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.FirstMidName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Email)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Faculty)
+                                </td>
+                                <td>
+                                    <button asp-page="../Students/Details" asp-route-id="@item.StudentId" class="btn btn-default">Details</button>
+                                    <input type="submit" value="Delete" asp-page-handler="deletestudent" asp-route-deleteId="@item.StudentId" class="btn btn-default"/>
+                                </td>
+                            </tr>
+                        }
+                    </table>
+                </dd>
+            </div>
+            <div class="form-group">
+                <label asp-for="StudentId" class="control-label"></label>
+                <select asp-for="StudentId" class="form-control"
+                        asp-items="@Model.AvailableStudents">
+                    <option value="">-- Select Student to Add --</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Add" asp-page-handler="addstudent" asp-route-studentId="@Model.StudentId" class="btn btn-default" />
             </div>
         </form>
     </div>
 </div>
-
+<br/>
 <div>
+    <a asp-page="./Edit" asp-route-id="@Model.CourseVM.CourseId">Edit</a> |
+    <a asp-page="./Delete" asp-route-id="@Model.CourseVM.CourseId">Delete</a> |
     <a asp-page="./Index">Back to List</a>
 </div>
 

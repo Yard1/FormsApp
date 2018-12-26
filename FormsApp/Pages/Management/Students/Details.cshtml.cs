@@ -27,7 +27,7 @@ namespace FormsApp.Pages.Students
                 return NotFound();
             }
 
-            Student = await _context.Student.FirstOrDefaultAsync(m => m.StudentId == id);
+            Student = await _context.Student.Include(sc => sc.StudentCourses).ThenInclude(c => c.Course).AsNoTracking().FirstOrDefaultAsync(m => m.StudentId == id);
 
             if (Student == null)
             {
