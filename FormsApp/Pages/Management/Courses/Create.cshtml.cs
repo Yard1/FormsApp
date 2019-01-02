@@ -33,7 +33,8 @@ namespace FormsApp.Pages.Courses
             {
                 return Page();
             }
-            var entry = _context.Add(new Course());
+            var newCourse = new Course();
+            var entry = _context.Add(newCourse);
             try
             {
                 entry.CurrentValues.SetValues(CourseVM);

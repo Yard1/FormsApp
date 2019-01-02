@@ -1,0 +1,126 @@
+﻿@page
+@using FormsApp.Pages.SignUp
+@model FormsApp.Pages.SignUp.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Index</h2>
+<form asp-page="./Index"
+      method="get"
+      asp-route-sortOrder="@Model.CurrentSort"
+      asp-route-entriesPerPage="@Model.EntriesPerPage">
+    <input type="hidden" name="sortOrder" value="@Model.CurrentSort" />
+    <input type="hidden" name="entriesPerPage" value="@Model.EntriesPerPage"/>
+    <div class="form-actions no-color">
+        <p>
+            Find by:
+            <select name="selectedStage" class="form-control" asp-items="@(new SelectList(Enum.GetValues(typeof(FormsApp.Models.Stage)), Model.SelectedStage))"></select>
+            <input type="text" name="searchString" value="@Model.CurrentFilter"/>
+            <input type="submit" value="Search" class="btn btn-default"/> |
+            <a asp-page="./Index" asp-route-selectedStage="@Model.SelectedStage" asp-route-entriesPerPage="@Model.EntriesPerPage">Back to full List</a>
+        </p>
+    </div>
+</form>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                <a asp-page="./Index" asp-route-sortOrder="@Model.TitleSort" asp-route-selectedStage="@Model.SelectedStage" asp-route-entriesPerPage="@Model.EntriesPerPage">
+                    @Html.DisplayNameFor(model => model.CourseVM[0].Title)
+                </a>
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CourseVM[0].Stage)
+            </th>
+            <th>
+                <a asp-page="./Index" asp-route-sortOrder="@Model.CurrentStudentsSort" asp-route-selectedStage="@Model.SelectedStage" asp-route-entriesPerPage="@Model.EntriesPerPage">
+                    @Html.DisplayNameFor(model => model.CourseVM[0].CurrentStudents)
+                </a>
+            </th>
+            <th>
+                <a asp-page="./Index" asp-route-sortOrder="@Model.MaxStudentsSort" asp-route-selectedStage="@Model.SelectedStage" asp-route-entriesPerPage="@Model.EntriesPerPage">
+                    @Html.DisplayNameFor(model => model.CourseVM[0].MaxStudents)
+                </a>
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CourseVM[0].Trainer)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.CourseVM)
+        {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Stage)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CurrentStudents)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MaxStudents)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Trainer)
+            </td>
+            <td>
+                @if (item.CurrentStudents < item.MaxStudents)
+                {
+                    <a asp-page="./SignUp" asp-route-id="@item.CourseId">Sign Up</a>
+                }
+                else
+                {
+                    <a color="red">No free slots</a>
+                } |
+                <a asp-page="./Details" asp-route-id="@item.CourseId">Details</a>
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>
+
+@{
+    var prevDisabled = !Model.CourseVM.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.CourseVM.HasNextPage ? "disabled" : "";
+}
+
+<a asp-page="./Index"
+   asp-route-sortOrder="@Model.CurrentSort"
+   asp-route-pageIndex="@(Model.CourseVM.PageIndex - 1)"
+   asp-route-currentFilter="@Model.CurrentFilter"
+   asp-route-selectedStage="@Model.SelectedStage"
+   asp-route-entriesPerPage="@Model.EntriesPerPage"
+   class="btn btn-default @prevDisabled">
+    Previous
+</a>
+<a asp-page="./Index"
+   asp-route-sortOrder="@Model.CurrentSort"
+   asp-route-pageIndex="@(Model.CourseVM.PageIndex + 1)"
+   asp-route-currentFilter="@Model.CurrentFilter"
+   asp-route-selectedStage="@Model.SelectedStage"
+   asp-route-entriesPerPage="@Model.EntriesPerPage"
+   class="btn btn-default @nextDisabled">
+    Next
+</a>
+<form asp-page="./Index"
+      method="get"
+      asp-route-sortOrder="@Model.CurrentSort"
+      asp-route-selectedStage="@Model.SelectedStage"
+      asp-route-currentFilter="@Model.CurrentFilter">
+    <input type="hidden" name="sortOrder" value="@Model.CurrentSort" />
+    <input type="hidden" name="selectedStage" value="@Model.SelectedStage"/>
+    <input type="hidden" name="currentFilter" value="@Model.CurrentFilter"/>
+    <div class="form-actions no-color">
+        <p>
+            Entries per page:
+            <input type="text" name="entriesPerPage" value="@Model.DefaultEntriesPerPage"/>
+            <input type="submit" value="Change" class="btn btn-default"/>
+        </p>
+    </div>
+</form>

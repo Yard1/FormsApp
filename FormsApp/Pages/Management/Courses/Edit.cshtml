@@ -16,7 +16,7 @@
 <div class="row">
     <div>
         <partial name="_CourseMainEdit" model="Model.CourseVM" />
-        <br/>
+        <br />
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="CourseVM.CourseId" />
@@ -87,7 +87,7 @@
                 <input type="submit" value="Add" asp-page-handler="add" class="btn btn-default" />
             </div>
         </form>
-        <br/>
+        <br />
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="CourseVM.CourseId" />
@@ -131,7 +131,7 @@
                                 </td>
                                 <td>
                                     <button asp-page="../Students/Details" asp-route-id="@item.StudentId" class="btn btn-default">Details</button>
-                                    <input type="submit" value="Delete" asp-page-handler="deletestudent" asp-route-deleteId="@item.StudentId" class="btn btn-default"/>
+                                    <input type="submit" value="Delete" asp-page-handler="deletestudent" asp-route-deleteId="@item.StudentId" class="btn btn-default" />
                                 </td>
                             </tr>
                         }

@@ -123,6 +123,12 @@ namespace FormsApp.Pages.Courses
             Course.MaxStudents = CourseVM.MaxStudents;
             Course.Trainer = CourseVM.Trainer;
 
+            if (!string.IsNullOrEmpty(CourseVM.Password))
+            {
+                Course.GenerateCoursePassword(CourseVM.Password);
+                CourseVM.Password = null;
+            }
+
             _context.Attach(Course).State = EntityState.Modified;
 
             try
